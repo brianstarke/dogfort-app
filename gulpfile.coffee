@@ -10,21 +10,21 @@ paths =
   jade: ['**/*.jade', '!node_modules/**/*.jade']
   coffee: ['scripts/**/*.coffee']
   scripts: [
-    './bower_components/jquery/jquery.min.js'
-    './bower_components/uikit/dist/js/uikit.min.js'
-    './bower_components/uikit/dist/js/addons/sticky.min.js'
-    './bower_components/angular/angular.min.js'
-    './bower_components/angular-route/angular-route.min.js'
-    './bower_components/angular-cookies/angular-cookies.min.js'
-    './bower_components/angular-resource/angular-resource.min.js'
-    './bower_components/angular-toastr/dist/angular-toastr.min.js'
-    './bower_components/moment/min/moment.min.js'
-    './bower_components/angular-moment/angular-moment.min.js'
+    './components/jquery/jquery.min.js'
+    './components/uikit/dist/js/uikit.min.js'
+    './components/uikit/dist/js/addons/sticky.min.js'
+    './components/angular/angular.min.js'
+    './components/angular-route/angular-route.min.js'
+    './components/angular-cookies/angular-cookies.min.js'
+    './components/angular-resource/angular-resource.min.js'
+    './components/angular-toastr/dist/angular-toastr.min.js'
+    './components/moment/min/moment.min.js'
+    './components/angular-moment/angular-moment.min.js'
   ]
   less: './less/**/*.less'
-  fonts: ['./bower_components/uikit/src/fonts/*.*']
+  fonts: ['./components/uikit/src/fonts/*.*']
   images: './images/{*.ico,*.jpg,*.png}'
-  dist: '../public'
+  dist: './dist'
 
 # clean public folder
 gulp.task 'clean', ->
