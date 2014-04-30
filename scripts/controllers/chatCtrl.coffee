@@ -2,12 +2,13 @@ app = angular.module 'dogfort'
 
 class ChatCtrl extends BaseCtrl
   @register app
-  @inject '$scope', '$location', 'Channel', 'Message', 'User', 'toastr'
+  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$anchorScroll', '$window'
 
   initialize: ->
     @$scope.channels          = {}
     @$scope.messages          = []
     @$scope.currentChannelId  = ''
+    @$scope.maxHeight         = @$window.innerHeight
 
     do @_refreshChannels
 
@@ -28,7 +29,7 @@ class ChatCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   _refreshChannels: ->
-    @Channel.userChannels()
+    @Channel.byUser(@$rootScope.user.uid)
       .success (data) =>
         @$scope.currentChannelId  = data.channels[0].uid
         @$scope.channels          = data.channels
@@ -38,8 +39,9 @@ class ChatCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   _refreshMessages: ->
-    @Message.forChannel(@$scope.currentChannelId)
+    @Message.byChannel(@$scope.currentChannelId)
       .success (data) =>
+        @$scope.messages = []
         for message in data
           @_addMessage message
       .error (data) =>

@@ -4,6 +4,7 @@ app = angular.module 'dogfort', [
 
   'toastr'
   'angularMoment'
+  'luegg.directives'
 ]
 
 app.config [
@@ -35,3 +36,4 @@ app.config [
 
     toastrConfig.positionClass = 'toast-bottom-full-width'
 ]
+

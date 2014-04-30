@@ -1,18 +1,13 @@
 div
   .uk-container.uk-margin-left.uk-margin-right.uk-margin
     .uk-grid
-      .uk-width-1-5
-        h3 your channels
-
-        ul.uk-tab.uk-tab-left
+      .uk-width-1-6
+        ul.uk-tab.uk-tab-left(data-uk-sticky="{top:60}")
           li(ng-repeat="c in channels", ng-class="{ 'uk-active': isActive(c.uid)}")
             a(ng-click="changeChannel(c.uid)") {{c.name}}
 
-      .uk-width-4-5
-        form.uk-form(ng-submit='sendMessage()')
-          input.uk-form-large.uk-form-width-large(ng-model='message', type='text', placeholder='say something...')
-        br
-        div.uk-overflow-container
+      .uk-width-5-6
+        .chat(scroll-glue, style="height:{{maxHeight-120}}px")
           div(ng-repeat="m in messages")
             article.uk-comment.uk-panel.uk-panel-box.uk-animation-slide-left
               header.uk-comment-header
@@ -24,8 +19,11 @@ div
                     a(href='/')
                       span @{{m.user.username}}
                   li
-                    span(am-time-ago="m.timestamp", am-preprocess="unix")
+                    span(am-time-ago="m.timestamp")
+                    |, &nbsp;{{m.timestamp | amDateFormat:'h:mma on M/D'}}
             br
-          a#bottom
+        form.uk-form(ng-submit='sendMessage()').chat-input
+          input.uk-form-large.uk-form-width-large(ng-model='message', type='text', placeholder='say something...')
+
 
 

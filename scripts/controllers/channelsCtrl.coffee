@@ -12,7 +12,7 @@ class ChannelsCtrl extends BaseCtrl
     do @_refreshChannels
 
   join: (channelId) ->
-    Channel.join(channelId)
+    @Channel.join(channelId)
       .success =>
         @toastr.success 'Channel joined', 'SUCCESS'
         do @_refreshChannels
@@ -20,7 +20,7 @@ class ChannelsCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   leave: (channelId) ->
-    Channel.leave(channelId)
+    @Channel.leave(channelId)
       .success =>
         @toastr.success 'Left channel', 'SUCCESS'
         do @_refreshChannels
@@ -28,7 +28,7 @@ class ChannelsCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   create: ->
-    Channel.create(@$scope.newchannel)
+    @Channel.create(@$scope.newchannel)
       .success =>
         @createModal._hide()
         @$scope.newchannel = {}
