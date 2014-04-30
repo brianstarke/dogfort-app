@@ -2,13 +2,13 @@ app = angular.module 'dogfort'
 
 class LoginCtrl extends BaseCtrl
   @register app
-  @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'toastr'
+  @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'Auth', 'toastr'
 
   initialize: ->
     @registerModal = new $.UIkit.modal.Modal('#register')
 
   login: ->
-    @User.authenticate(@$scope.user.username, @$scope.user.password)
+    @Auth.authenticate(@$scope.user)
       .success (data) =>
         @$cookies.dogfort_token = data.token
         @$location.path '/channels'

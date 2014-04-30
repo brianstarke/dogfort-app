@@ -2,7 +2,7 @@ app = angular.module 'dogfort'
 
 class MainCtrl extends BaseCtrl
   @register app
-  @inject '$rootScope', '$scope', '$cookies', '$location', 'User'
+  @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'Auth'
 
   initialize: ->
     do @_checkUserAuth
@@ -19,7 +19,7 @@ class MainCtrl extends BaseCtrl
   _checkUserAuth: ->
     # checks the cookies for a token, and set the current
     # user based on that, or fails and require login
-    @User.getAuthedUser()
+    @Auth.userByAuth()
       .success (data) =>
         # save user data on the root scope so everything can use it
         @$rootScope.user = data.user

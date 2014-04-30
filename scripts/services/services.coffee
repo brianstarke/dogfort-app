@@ -8,17 +8,8 @@ app.factory 'User', ['$http', ($http) ->
     create: (newUser) ->
       $http.post @baseUrl + '/users', newUser
 
-    authenticate: (username, password) ->
-      $http.post @baseUrl + '/authenticate', {
-        username: username
-        password: password
-      }
-
     byId: (userId) ->
       $http.get @baseUrl + '/users/' + userId
-
-    getAuthedUser: ->
-      $http.get @baseUrl + '/user'
 ]
 
 app.factory 'Message', ['$http', ($http) ->
