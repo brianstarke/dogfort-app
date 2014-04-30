@@ -1,10 +1,14 @@
-gulp    = require 'gulp'
-jade    = require 'gulp-jade'
-clean   = require 'gulp-clean'
-coffee  = require 'gulp-coffee'
-less    = require 'gulp-less'
-concat  = require 'gulp-concat'
-uglify  = require 'gulp-uglify'
+gulp        = require 'gulp'
+jade        = require 'gulp-jade'
+clean       = require 'gulp-clean'
+coffee      = require 'gulp-coffee'
+less        = require 'gulp-less'
+concat      = require 'gulp-concat'
+uglify      = require 'gulp-uglify'
+Cachebust   = require 'gulp-cachebust'
+runSequence = require 'run-sequence'
+
+cb = new Cachebust();
 
 paths =
   jade: ['**/*.jade', '!node_modules/**/*.jade']
@@ -33,15 +37,17 @@ gulp.task 'clean', ->
     .pipe clean({force: true})
 
 # compile jade templates
-gulp.task 'jade', ->
+gulp.task 'jade', ['less','scripts','coffee'], ->
   gulp.src(paths.jade)
     .pipe(jade())
+    .pipe(cb.references())
     .pipe(gulp.dest(paths.dist))
 
 # compile less styles
 gulp.task 'less', ->
   gulp.src(paths.less)
     .pipe(less())
+    .pipe(cb.resources())
     .pipe(gulp.dest(paths.dist + '/styles'))
 
 # compile/concat coffeescript
@@ -49,12 +55,14 @@ gulp.task 'coffee', ->
   gulp.src(paths.coffee)
     .pipe(coffee())
     .pipe(concat('dogfort.js'))
+    .pipe(cb.resources())
     .pipe(gulp.dest(paths.dist + '/scripts'))
 
 gulp.task 'scripts', ->
   gulp.src(paths.scripts)
     .pipe(uglify())
     .pipe(concat('thirdparty.min.js'))
+    .pipe(cb.resources())
     .pipe(gulp.dest(paths.dist + '/scripts'))
 
 # copy fonts
@@ -74,22 +82,11 @@ gulp.task 'watch', ->
   gulp.watch paths.less, ['less']
   gulp.watch paths.fonts, ['fonts']
 
-# do ALL THE THINGS
-gulp.task 'build', [
-  'less'
-  'jade'
-  'fonts'
-  'scripts'
-  'images'
-  'coffee'
-]
+gulp.task 'build', (callback) ->
+  runSequence('clean',
+    ['fonts', 'images', 'jade', 'scripts'],
+    callback
+  )
 
-gulp.task 'default', [
-  'less'
-  'jade'
-  'fonts'
-  'scripts'
-  'images'
-  'coffee'
-  'watch'
-]
+gulp.task 'default', (callback) ->
+  runSequence('build', 'watch', callback)
