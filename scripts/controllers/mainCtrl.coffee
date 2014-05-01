@@ -36,7 +36,8 @@ class MainCtrl extends BaseCtrl
 
   _connectToSocket: ->
     if window['WebSocket']
-      conn = new WebSocket 'ws://localhost:9000/ws/connect'
+      url = "ws://#{@$location.$$host}:#{@$location.$$port}/ws/connect"
+      conn = new WebSocket url
 
       conn.onclose = (event) ->
         console.log 'socket connection closed'
