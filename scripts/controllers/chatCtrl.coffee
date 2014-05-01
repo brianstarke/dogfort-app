@@ -10,13 +10,22 @@ class ChatCtrl extends BaseCtrl
     @$scope.currentChannelId  = ''
     @$scope.maxHeight         = @$window.innerHeight
 
+    @$scope.$on 'message', @_messageHandler
+
     do @_refreshChannels
+
+  _messageHandler: (event, data) =>
+    d = JSON.parse(data)
+    channelId = Object.keys(d)[0]
+
+    @_addMessage channelId, d[channelId]
 
   # for highlighting channel tabs on the chat view
   isActive: (channelId) -> channelId is @$scope.currentChannelId
 
   changeChannel: (channelId) ->
     @$scope.currentChannelId = channelId
+    @$scope.channels[channelId].unread = 0
 
     do @_refreshMessages
 
@@ -24,7 +33,6 @@ class ChatCtrl extends BaseCtrl
     @Message.send(@$scope.message, @$scope.currentChannelId)
       .success =>
         @$scope.message = ''
-        do @_refreshMessages
       .error =>
         @toastr.error data, 'ERROR'
 
@@ -32,7 +40,10 @@ class ChatCtrl extends BaseCtrl
     @Channel.byUser(@$rootScope.user.uid)
       .success (data) =>
         @$scope.currentChannelId  = data.channels[0].uid
-        @$scope.channels          = data.channels
+
+        for channel in data.channels
+          @$scope.channels[channel.uid] = channel
+          @$scope.channels[channel.uid].unread = 0
 
         do @_refreshMessages
       .error (data) =>
@@ -43,17 +54,20 @@ class ChatCtrl extends BaseCtrl
       .success (data) =>
         @$scope.messages = []
         for message in data
-          @_addMessage message
+          @_addMessage @$scope.currentChannelId, message
       .error (data) =>
         @toastr.error data, 'ERROR'
 
-  _addMessage: (message) ->
-    @User.byId(message.userId)
-      .success (data) =>
-        message.user = data
-        @$scope.messages.push message
+  _addMessage: (channelId, message) ->
+    if channelId is @$scope.currentChannelId
+      @User.byId(message.userId)
+        .success (data) =>
+          message.user = data
+          @$scope.messages.push message
+        .error (data) =>
+          @toastr.error data, 'ERROR'
+    else
+      @$scope.channels[channelId].unread++
+      @$scope.$digest()
 
-        # just in case, make sure messages are in order
-        @$scope.messages = @$scope.messages.sort (a,b) -> a.timestamp > b.timestamp
-      .error (data) =>
-        @toastr.error data, 'ERROR'
+

@@ -5,6 +5,8 @@ div
         ul.uk-tab.uk-tab-left(data-uk-sticky="{top:60}")
           li(ng-repeat="c in channels", ng-class="{ 'uk-active': isActive(c.uid)}")
             a(ng-click="changeChannel(c.uid)") {{c.name}}
+              | &nbsp;
+              span.uk-badge.uk-badge-notification(ng-show='c.unread > 0') {{c.unread}}
 
       .uk-width-5-6
         .chat(scroll-glue, style="height:{{maxHeight-120}}px")

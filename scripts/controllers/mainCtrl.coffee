@@ -41,7 +41,8 @@ class MainCtrl extends BaseCtrl
       conn.onclose = (event) ->
         console.log 'socket connection closed'
 
-      conn.onmessage = (event) ->
-        console.log event.data
+      conn.onmessage = (event) =>
+        @$rootScope.$broadcast 'message', event.data
+
     else
       alert 'This browser does not support WebSockets, use something newer.  http://caniuse.com/websockets'

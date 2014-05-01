@@ -40,11 +40,22 @@ gulp.task 'clean', ->
 gulp.task 'jade', ['less','scripts','coffee'], ->
   gulp.src(paths.jade)
     .pipe(jade())
+    .pipe(gulp.dest(paths.dist))
+
+# compile jade templates
+gulp.task 'jade-build', ['less-build','scripts-build','coffee-build'], ->
+  gulp.src(paths.jade)
+    .pipe(jade())
     .pipe(cb.references())
     .pipe(gulp.dest(paths.dist))
 
 # compile less styles
 gulp.task 'less', ->
+  gulp.src(paths.less)
+    .pipe(less())
+    .pipe(gulp.dest(paths.dist + '/styles'))
+
+gulp.task 'less-build', ->
   gulp.src(paths.less)
     .pipe(less())
     .pipe(cb.resources())
@@ -55,10 +66,22 @@ gulp.task 'coffee', ->
   gulp.src(paths.coffee)
     .pipe(coffee())
     .pipe(concat('dogfort.js'))
+    .pipe(gulp.dest(paths.dist + '/scripts'))
+
+gulp.task 'coffee-build', ->
+  gulp.src(paths.coffee)
+    .pipe(coffee())
+    .pipe(concat('dogfort.js'))
     .pipe(cb.resources())
     .pipe(gulp.dest(paths.dist + '/scripts'))
 
 gulp.task 'scripts', ->
+  gulp.src(paths.scripts)
+    .pipe(uglify())
+    .pipe(concat('thirdparty.min.js'))
+    .pipe(gulp.dest(paths.dist + '/scripts'))
+
+gulp.task 'scripts-build', ->
   gulp.src(paths.scripts)
     .pipe(uglify())
     .pipe(concat('thirdparty.min.js'))
@@ -84,9 +107,13 @@ gulp.task 'watch', ->
 
 gulp.task 'build', (callback) ->
   runSequence('clean',
-    ['fonts', 'images', 'jade', 'scripts'],
+    ['fonts', 'images', 'jade-build'],
     callback
   )
 
 gulp.task 'default', (callback) ->
-  runSequence('build', 'watch', callback)
+  runSequence('clean',
+    ['fonts', 'images', 'jade'],
+    'watch',
+    callback
+  )
