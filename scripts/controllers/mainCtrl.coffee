@@ -5,7 +5,7 @@ class MainCtrl extends BaseCtrl
   @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'Auth'
 
   initialize: ->
-    do @_checkUserAuth
+    do @checkUserAuth
 
   logout: ->
     delete @$cookies['dogfort_token']
@@ -16,7 +16,7 @@ class MainCtrl extends BaseCtrl
   # for highlighting the correct tab on the navbar
   isActive = (viewLocation) -> viewLocation is @$location.path()
 
-  _checkUserAuth: ->
+  checkUserAuth: ->
     # checks the cookies for a token, and set the current
     # user based on that, or fails and require login
     @Auth.userByAuth()

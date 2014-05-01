@@ -13,6 +13,7 @@ class LoginCtrl extends BaseCtrl
         @$cookies.dogfort_token = data.token
         @$location.path '/channels'
         @toastr.success 'Authenticated', 'success'
+        @$scope.$parent.checkUserAuth()
       .error (data) =>
         @toastr.error data, 'ERROR'
 
