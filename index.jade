@@ -3,8 +3,7 @@ extends layout
 block content
 
   nav.uk-navbar.uk-navbar-attached.dogfort-navbar(data-uk-sticky)
-    a.uk-navbar-brand.uk-hidden-small.brand-font(href="/") dogfort.v5 &nbsp;
-      span.uk-badge.uk-badge-warning beta
+    span.uk-navbar-brand.uk-hidden-small.brand-font dogfort 5
 
     ul.uk-navbar-nav(ng-show='user')
       li(ng-class="{ 'uk-active': isActive('/chat')}")
@@ -16,9 +15,7 @@ block content
       ul.uk-navbar-nav
         li
           a(data-uk-offcanvas="{target:'#menu'}")
-            span.sm-avatar-frame(display: 'inline-block')
-              img(ng-src="http://www.gravatar.com/avatar/{{user.gravatarHash}}?s=20")
-            | &nbsp; @{{user.username}} &nbsp;
+            i.uk-icon.uk-icon-align-justify
 
   br
   .ng-view

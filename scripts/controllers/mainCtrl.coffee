@@ -14,7 +14,7 @@ class MainCtrl extends BaseCtrl
     @$location.path '/login'
 
   # for highlighting the correct tab on the navbar
-  isActive = (viewLocation) -> viewLocation is @$location.path()
+  isActive: (viewLocation) -> viewLocation is @$location.path()
 
   checkUserAuth: ->
     # checks the cookies for a token, and set the current
