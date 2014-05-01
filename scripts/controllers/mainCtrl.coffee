@@ -36,7 +36,7 @@ class MainCtrl extends BaseCtrl
 
   _connectToSocket: ->
     if window['WebSocket']
-      url = "ws://#{@$location.$$host}:#{@$location.$$port}/ws/connect"
+      url = "ws://#{@$location.$$host}:3000/ws/connect"
       conn = new WebSocket url
 
       conn.onclose = (event) ->
