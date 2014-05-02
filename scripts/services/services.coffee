@@ -9,7 +9,7 @@ app.factory 'User', ['$http', ($http) ->
       $http.post @baseUrl + '/users', newUser
 
     byId: (userId) ->
-      $http.get @baseUrl + '/users/' + userId
+      $http.get @baseUrl + '/users/' + userId, { cache: true }
 ]
 
 app.factory 'authInterceptor',  ['$q', '$cookies', '$location', ($q, $cookies, $location) ->

@@ -5,6 +5,8 @@ class MainCtrl extends BaseCtrl
   @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'Auth'
 
   initialize: ->
+    @$rootScope.users = {}
+
     do @checkUserAuth
 
   logout: ->

@@ -6,7 +6,6 @@ class ChatCtrl extends BaseCtrl
 
   initialize: ->
     @$scope.channels          = {}
-    @$scope.messages          = []
     @$scope.currentChannelId  = ''
     @$scope.maxHeight         = @$window.innerHeight
 
@@ -27,8 +26,6 @@ class ChatCtrl extends BaseCtrl
     @$scope.currentChannelId = channelId
     @$scope.channels[channelId].unread = 0
 
-    do @_refreshMessages
-
   sendMessage: ->
     @Message.send(@$scope.message, @$scope.currentChannelId)
       .success =>
@@ -44,30 +41,34 @@ class ChatCtrl extends BaseCtrl
         for channel in data.channels
           @$scope.channels[channel.uid] = channel
           @$scope.channels[channel.uid].unread = 0
-
-        do @_refreshMessages
+          @_populateMessages channel.uid
       .error (data) =>
         @toastr.error data, 'ERROR'
 
-  _refreshMessages: ->
-    @Message.byChannel(@$scope.currentChannelId)
+  _populateMessages: (channelId) ->
+    @Message.byChannel(channelId)
       .success (data) =>
-        @$scope.messages = []
-        for message in data
-          @_addMessage @$scope.currentChannelId, message
+        @$scope.channels[channelId].messages = data.sort (a,b) -> a.timestamp > b.timestamp
+
+        # add user info
+        for m in @$scope.channels[channelId].messages
+          @User.byId(m.userId)
+          .success (data) =>
+            m.user = data
+          .error (data) =>
+            @toastr.error data, 'ERROR'
+
       .error (data) =>
         @toastr.error data, 'ERROR'
 
   _addMessage: (channelId, message) ->
-    if channelId is @$scope.currentChannelId
-      @User.byId(message.userId)
+    @User.byId(message.userId)
         .success (data) =>
           message.user = data
-          @$scope.messages.push message
+          @$scope.channels[channelId].messages.push message
         .error (data) =>
           @toastr.error data, 'ERROR'
-    else
+
+    if channelId isnt @$scope.currentChannelId
       @$scope.channels[channelId].unread++
       @$scope.$digest()
-
-

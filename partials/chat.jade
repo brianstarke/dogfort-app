@@ -10,7 +10,7 @@ div
 
       .uk-width-5-6
         .chat(scroll-glue, style="height:{{maxHeight-120}}px")
-          div(ng-repeat="m in messages")
+          div(ng-repeat="m in channels[currentChannelId].messages")
             article.uk-comment.uk-panel.uk-panel-box.uk-animation-slide-left
               header.uk-comment-header
                 div.avatar-frame.uk-comment-avatar(display: 'inline-block')
