@@ -1,6 +1,7 @@
 app = angular.module 'dogfort', [
   'ngRoute'
   'ngCookies'
+  'ngSanitize'
 
   'toastr'
   'angularMoment'
@@ -10,10 +11,13 @@ app = angular.module 'dogfort', [
 app.config [
   '$routeProvider'
   '$httpProvider'
+  '$sceProvider'
   'toastrConfig'
 
-  ($routeProvider, $httpProvider, toastrConfig) ->
+  ($routeProvider, $httpProvider, $sceProvider, toastrConfig) ->
     $httpProvider.interceptors.push 'authInterceptor'
+
+    $sceProvider.enabled false
 
     $routeProvider.when '/login', {
       templateUrl: '/partials/login.html'
@@ -36,4 +40,3 @@ app.config [
 
     toastrConfig.positionClass = 'toast-bottom-full-width'
 ]
-

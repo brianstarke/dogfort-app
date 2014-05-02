@@ -21,6 +21,7 @@ paths =
     './components/angular-route/angular-route.min.js'
     './components/angular-cookies/angular-cookies.min.js'
     './components/angular-resource/angular-resource.min.js'
+    './components/angular-sanitize/angular-sanitize.min.js'
     './components/angular-toastr/dist/angular-toastr.min.js'
     './components/moment/min/moment.min.js'
     './components/angular-moment/angular-moment.min.js'

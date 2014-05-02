@@ -24,6 +24,7 @@
     "angular-resource": "~1.2.16",
     "angular-toastr": "~0.2.4",
     "angular-moment": "~0.7.0",
-    "angularjs-scroll-glue": "~0.0.1"
+    "angularjs-scroll-glue": "~0.0.1",
+    "angular-sanitize": "~1.2.16"
   }
 }

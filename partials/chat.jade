@@ -9,20 +9,24 @@ div
               span.uk-badge.uk-badge-notification(ng-show='c.unread > 0') {{c.unread}}
 
       .uk-width-5-6
+        span.uk-article-meta
+          i.uk-icon-user
+          | &nbsp;{{channels[currentChannelId].members.length}}
+        span.uk-float-right.uk-article-meta {{channels[currentChannelId].description}}
         .chat(scroll-glue, style="height:{{maxHeight-120}}px")
           div(ng-repeat="m in channels[currentChannelId].messages")
             article.uk-comment.uk-panel.uk-panel-box.uk-animation-slide-left
               header.uk-comment-header
-                div.avatar-frame.uk-comment-avatar(display: 'inline-block')
-                  img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=50")
-                h4.uk-comment-title {{m.text}}
+                div.uk-comment-avatar.avatar-frame(display: 'inline-block')
+                  img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=40")
+                h4.uk-comment-title(ng-bind-html="m.text | linky")
                 ul.uk-comment-meta.uk-subnav.uk-subnav-line
                   li
                     a(href='/')
-                      span @{{users[m.userId].username}}
+                      small @{{users[m.userId].username}}
                   li
-                    span(am-time-ago="m.timestamp")
-                    |, &nbsp;{{m.timestamp | amDateFormat:'h:mma on M/D'}}
+                    small(am-time-ago="m.timestamp")
+                    small , &nbsp;{{m.timestamp | amDateFormat:'h:mma on M/D'}}
             br
         form.uk-form(ng-submit='sendMessage()').chat-input
           input.uk-form-large.uk-form-width-large(ng-model='message', type='text', placeholder='say something...')
