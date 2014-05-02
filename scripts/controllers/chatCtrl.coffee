@@ -73,6 +73,7 @@ class ChatCtrl extends BaseCtrl
         .success (data) =>
           message.user = data
           @$scope.channels[channelId].messages.push message
+          @$scope.users[id] = data unless @$scope.users[id]?
         .error (data) =>
           @toastr.error data, 'ERROR'
 
