@@ -6,6 +6,7 @@ class ChatCtrl extends BaseCtrl
 
   initialize: ->
     @$scope.channels          = {}
+    @$scope.users             = {}
     @$scope.currentChannelId  = ''
     @$scope.maxHeight         = @$window.innerHeight
 
@@ -25,6 +26,15 @@ class ChatCtrl extends BaseCtrl
   changeChannel: (channelId) ->
     @$scope.currentChannelId = channelId
     @$scope.channels[channelId].unread = 0
+
+  _cacheUser: (id) ->
+    # add user to local map if they aren't there already
+    if not @$scope.users[id]?
+      @User.byId(id)
+        .success (data) =>
+          @$scope.users[id] = data
+        .error (data) =>
+          @toastr.error data, 'ERROR'
 
   sendMessage: ->
     @Message.send(@$scope.message, @$scope.currentChannelId)
@@ -48,15 +58,12 @@ class ChatCtrl extends BaseCtrl
   _populateMessages: (channelId) ->
     @Message.byChannel(channelId)
       .success (data) =>
+        messages = data.sort (a,b) -> a.timestamp > b.timestamp
         @$scope.channels[channelId].messages = data.sort (a,b) -> a.timestamp > b.timestamp
 
-        # add user info
-        for m in @$scope.channels[channelId].messages
-          @User.byId(m.userId)
-          .success (data) =>
-            m.user = data
-          .error (data) =>
-            @toastr.error data, 'ERROR'
+        for m in messages
+          @$scope.channels[channelId].messages[m.uid] = m
+          @_cacheUser m.userId
 
       .error (data) =>
         @toastr.error data, 'ERROR'

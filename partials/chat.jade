@@ -14,12 +14,12 @@ div
             article.uk-comment.uk-panel.uk-panel-box.uk-animation-slide-left
               header.uk-comment-header
                 div.avatar-frame.uk-comment-avatar(display: 'inline-block')
-                  img(ng-src="http://www.gravatar.com/avatar/{{m.user.gravatarHash}}?s=50")
+                  img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=50")
                 h4.uk-comment-title {{m.text}}
                 ul.uk-comment-meta.uk-subnav.uk-subnav-line
                   li
                     a(href='/')
-                      span @{{m.user.username}}
+                      span @{{users[m.userId].username}}
                   li
                     span(am-time-ago="m.timestamp")
                     |, &nbsp;{{m.timestamp | amDateFormat:'h:mma on M/D'}}
