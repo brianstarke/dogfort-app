@@ -16,6 +16,8 @@ div
         .chat(scroll-glue, style="height:{{maxHeight-120}}px")
           div(ng-repeat="m in channels[currentChannelId].messages")
             article.uk-comment.uk-panel.uk-panel-box.uk-animation-slide-left
+              p.uk-thumbnail-large(ng-show="m.hasImage")
+                img.uk-border-rounded(ng-src="{{m.attachment}}")
               header.uk-comment-header
                 div.uk-comment-avatar.avatar-frame(display: 'inline-block')
                   img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=40")

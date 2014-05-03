@@ -69,11 +69,12 @@ class ChatCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   _addMessage: (channelId, message) ->
+    console.log message
     @User.byId(message.userId)
         .success (data) =>
           message.user = data
           @$scope.channels[channelId].messages.push message
-          @$scope.users[id] = data unless @$scope.users[id]?
+          @$scope.users[message.userId] = data unless @$scope.users[message.userId]?
         .error (data) =>
           @toastr.error data, 'ERROR'
 
