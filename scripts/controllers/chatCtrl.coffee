@@ -2,7 +2,7 @@ app = angular.module 'dogfort'
 
 class ChatCtrl extends BaseCtrl
   @register app
-  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$anchorScroll', '$window'
+  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$anchorScroll', '$window', '$document'
 
   initialize: ->
     @$scope.channels          = {}
@@ -69,12 +69,12 @@ class ChatCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   _addMessage: (channelId, message) ->
-    console.log message
     @User.byId(message.userId)
         .success (data) =>
           message.user = data
           @$scope.channels[channelId].messages.push message
           @$scope.users[message.userId] = data unless @$scope.users[message.userId]?
+          @$document[0].getElementById('bloop').play()
         .error (data) =>
           @toastr.error data, 'ERROR'
 

@@ -28,6 +28,7 @@ paths =
     './components/angularjs-scroll-glue/src/scrollglue.js'
   ]
   less: './less/**/*.less'
+  audio: './audio/**/*.mp3'
   fonts: ['./components/uikit/src/fonts/*.*']
   images: './images/{*.ico,*.jpg,*.png}'
   dist: './dist'
@@ -94,6 +95,11 @@ gulp.task 'fonts', ->
   gulp.src(paths.fonts)
     .pipe gulp.dest(paths.dist + '/fonts')
 
+# copy audio
+gulp.task 'audio', ->
+  gulp.src(paths.audio)
+    .pipe gulp.dest(paths.dist + '/audio')
+
 # copy images
 gulp.task 'images', ->
   gulp.src(paths.images)
@@ -108,13 +114,13 @@ gulp.task 'watch', ->
 
 gulp.task 'build', (callback) ->
   runSequence('clean',
-    ['fonts', 'images', 'jade-build'],
+    ['fonts', 'images', 'audio', 'jade-build'],
     callback
   )
 
 gulp.task 'default', (callback) ->
   runSequence('clean',
-    ['fonts', 'images', 'jade'],
+    ['fonts', 'images', 'audio', 'jade'],
     'watch',
     callback
   )
