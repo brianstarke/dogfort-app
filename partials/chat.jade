@@ -10,6 +10,10 @@ div
               | &nbsp;
               span.uk-badge.uk-badge-notification(ng-show='c.unread > 0') {{c.unread}}
 
+        .uk-panel.uk-panel-box.bottom.uk-panel-box-primary
+          h3.uk-panel-title members
+          div(ng-repeat="u in channels[currentChannelId].members") @{{users[u].username}}
+
       .uk-width-5-6
         span.uk-article-meta
           i.uk-icon-user
@@ -34,6 +38,3 @@ div
             br
         form.uk-form(ng-submit='sendMessage()').chat-input
           input.uk-form-large.uk-form-width-large(ng-model='message', type='text', placeholder='say something...')
-
-
-
