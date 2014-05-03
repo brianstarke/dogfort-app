@@ -51,6 +51,10 @@ class ChatCtrl extends BaseCtrl
         for channel in data.channels
           @$scope.channels[channel.uid] = channel
           @$scope.channels[channel.uid].unread = 0
+
+          for user in channel.members
+            @_cacheUser user
+
           @_populateMessages channel.uid
       .error (data) =>
         @toastr.error data, 'ERROR'
@@ -63,7 +67,6 @@ class ChatCtrl extends BaseCtrl
 
         for m in messages
           @$scope.channels[channelId].messages[m.uid] = m
-          @_cacheUser m.userId
 
       .error (data) =>
         @toastr.error data, 'ERROR'
@@ -73,7 +76,6 @@ class ChatCtrl extends BaseCtrl
         .success (data) =>
           message.user = data
           @$scope.channels[channelId].messages.push message
-          @$scope.users[message.userId] = data unless @$scope.users[message.userId]?
           @$document[0].getElementById('bloop').play()
         .error (data) =>
           @toastr.error data, 'ERROR'
