@@ -76,6 +76,9 @@ class ChatCtrl extends BaseCtrl
   _addMessage: (channelId, message) ->
     @_cacheUser message.userId unless message.isAdminMsg
 
+    console.log "adding message"
+    console.log message
+
     @$scope.channels[channelId].messages.push message
     @$document[0].getElementById('bloop').play()
 
