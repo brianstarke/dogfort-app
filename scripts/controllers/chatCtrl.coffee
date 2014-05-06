@@ -2,7 +2,7 @@ app = angular.module 'dogfort'
 
 class ChatCtrl extends BaseCtrl
   @register app
-  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$anchorScroll', '$window', '$document'
+  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$anchorScroll', '$window', '$document', '$sce'
 
   initialize: ->
     @$scope.channels          = {}
@@ -23,6 +23,9 @@ class ChatCtrl extends BaseCtrl
   # for highlighting channel tabs on the chat view
   isActive: (channelId) -> channelId is @$scope.currentChannelId
 
+  showHtml: (text) ->
+    @$sce.trustAsHtml(text)
+
   changeChannel: (channelId) ->
     @$scope.currentChannelId = channelId
     @$scope.channels[channelId].unread = 0
@@ -38,10 +41,9 @@ class ChatCtrl extends BaseCtrl
 
   sendMessage: ->
     @Message.send(@$scope.message, @$scope.currentChannelId)
-      .success =>
-        @$scope.message = ''
       .error =>
         @toastr.error data, 'ERROR'
+    @$scope.message = ''
 
   _refreshChannels: ->
     @Channel.byUser(@$rootScope.user.uid)

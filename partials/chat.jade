@@ -25,13 +25,16 @@ div
               p.uk-thumbnail-large(ng-show="m.hasImage")
                 img.uk-border-rounded(ng-src="{{m.attachment}}")
               header.uk-comment-header
-                div.uk-comment-avatar.avatar-frame(display: 'inline-block')
-                  img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=40")
-                h4.uk-comment-title(ng-bind-html="m.text | linky")
+                div.uk-comment-avatar.avatar-frame
+                  img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=40", ng-hide="m.isAdminMsg")
+                  img(ng-src="/images/admin-avatar.jpg", ng-show="m.isAdminMsg")
+                h4.uk-comment-title(ng-bind-html="m.text | linky", ng-hide="m.isHtml")
+                h4.uk-comment-title(ng-bind-html="showHtml(m.text)", ng-show="m.isHtml")
                 ul.uk-comment-meta.uk-subnav.uk-subnav-line
                   li
                     a(href='/')
-                      small @{{users[m.userId].username}}
+                      small(ng-hide="m.isAdminMsg") @{{users[m.userId].username}}
+                      small(ng-show="m.isAdminMsg") @dogfort
                   li
                     small(am-time-ago="m.timestamp")
                     small , &nbsp;{{m.timestamp | amDateFormat:'h:mma on M/D'}}
