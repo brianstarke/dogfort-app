@@ -74,13 +74,10 @@ class ChatCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   _addMessage: (channelId, message) ->
-    @User.byId(message.userId)
-        .success (data) =>
-          message.user = data
-          @$scope.channels[channelId].messages.push message
-          @$document[0].getElementById('bloop').play()
-        .error (data) =>
-          @toastr.error data, 'ERROR'
+    @_cacheUser message.userId unless message.isAdminMsg
+
+    @$scope.channels[channelId].messages.push message
+    @$document[0].getElementById('bloop').play()
 
     if channelId isnt @$scope.currentChannelId
       @$scope.channels[channelId].unread++
