@@ -15,7 +15,6 @@ class ChatCtrl extends BaseCtrl
     do @_refreshChannels
 
   _messageHandler: (event, data) =>
-    console.log 'message received', data
     d = JSON.parse(data)
     channelId = Object.keys(d)[0]
 
@@ -80,6 +79,7 @@ class ChatCtrl extends BaseCtrl
     @_cacheUser message.userId unless message.isAdminMsg
 
     @$scope.channels[channelId].messages.push message
+    @$scope.$digest()
     @$document[0].getElementById('bloop').play()
     do @_scroll
 
@@ -92,4 +92,4 @@ class ChatCtrl extends BaseCtrl
 
     setTimeout ->
       c.scrollTop = c.scrollHeight
-    , 500
+    , 1000
