@@ -25,7 +25,6 @@ paths =
     './components/angular-toastr/dist/angular-toastr.min.js'
     './components/moment/min/moment.min.js'
     './components/angular-moment/angular-moment.min.js'
-    './components/angularjs-scroll-glue/src/scrollglue.js'
   ]
   less: './less/**/*.less'
   audio: './audio/**/*.mp3'

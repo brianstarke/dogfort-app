@@ -19,7 +19,7 @@ div
           i.uk-icon-user
           | &nbsp;{{channels[currentChannelId].members.length}}
         span.uk-float-right.uk-article-meta {{channels[currentChannelId].description}}
-        .chat(scroll-glue, style="height:{{maxHeight-120}}px")
+        .chat#chat(style="height:{{maxHeight-120}}px")
           div(ng-repeat="m in channels[currentChannelId].messages")
             article.uk-comment.uk-panel.uk-panel-box.uk-animation-slide-left
               p.uk-thumbnail-large(ng-show="m.hasImage")

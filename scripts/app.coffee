@@ -5,7 +5,6 @@ app = angular.module 'dogfort', [
 
   'toastr'
   'angularMoment'
-  'luegg.directives'
 ]
 
 app.config [

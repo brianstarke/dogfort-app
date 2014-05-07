@@ -2,7 +2,7 @@ app = angular.module 'dogfort'
 
 class ChatCtrl extends BaseCtrl
   @register app
-  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$anchorScroll', '$window', '$document', '$sce'
+  @inject '$rootScope', '$scope', '$location', 'Channel', 'Message', 'User', 'toastr', '$window', '$document', '$sce'
 
   initialize: ->
     @$scope.channels          = {}
@@ -70,18 +70,25 @@ class ChatCtrl extends BaseCtrl
         for m in messages
           @$scope.channels[channelId].messages[m.uid] = m
 
+        do @_scroll
+
       .error (data) =>
         @toastr.error data, 'ERROR'
 
   _addMessage: (channelId, message) ->
     @_cacheUser message.userId unless message.isAdminMsg
 
-    console.log "adding message"
-    console.log message
-
     @$scope.channels[channelId].messages.push message
     @$document[0].getElementById('bloop').play()
+    do @_scroll
 
     if channelId isnt @$scope.currentChannelId
       @$scope.channels[channelId].unread++
       @$scope.$digest()
+
+  _scroll: ->
+    c = angular.element('#chat')[0]
+
+    setTimeout ->
+      c.scrollTop = c.scrollHeight
+    , 500
