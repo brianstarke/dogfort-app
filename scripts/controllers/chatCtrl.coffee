@@ -15,6 +15,7 @@ class ChatCtrl extends BaseCtrl
     do @_refreshChannels
 
   _messageHandler: (event, data) =>
+    console.log 'message received', data
     d = JSON.parse(data)
     channelId = Object.keys(d)[0]
 
