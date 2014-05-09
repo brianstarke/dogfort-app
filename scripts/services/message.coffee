@@ -11,6 +11,6 @@ app.factory 'Message', ['$http', ($http) ->
         channelId : channelId
       }
 
-    byChannel: (channelId) ->
-      $http.get "#{@svcUrl}/channel/#{channelId}"
+    byChannel: (channelId, beforeTs, numResults) ->
+      $http.get "#{@svcUrl}/channel/#{channelId}/before/#{beforeTs}/num/#{numResults}"
 ]

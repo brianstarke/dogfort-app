@@ -73,7 +73,7 @@ class ChatCtrl extends BaseCtrl
         @toastr.error data, 'ERROR'
 
   _populateMessages: (channelId) ->
-    @Message.byChannel(channelId)
+    @Message.byChannel(channelId, new Date().getTime(), 30)
       .success (data) =>
         messages = data.sort (a,b) -> a.timestamp > b.timestamp
         @$scope.channels[channelId].messages = data.sort (a,b) -> a.timestamp > b.timestamp
