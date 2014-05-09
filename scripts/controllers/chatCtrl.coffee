@@ -30,6 +30,14 @@ class ChatCtrl extends BaseCtrl
     @$scope.currentChannelId = channelId
     @$scope.channels[channelId].unread = 0
 
+  leaveChannel: (channelId) ->
+    @Channel.leave(channelId)
+      .success =>
+        @toastr.success 'Left channel', 'SUCCESS'
+        do @_refreshChannels
+      .error (data) =>
+        @toastr.error data, 'ERROR'
+
   _cacheUser: (id) ->
     # add user to local map if they aren't there already
     if not @$scope.users[id]?
@@ -48,6 +56,9 @@ class ChatCtrl extends BaseCtrl
   _refreshChannels: ->
     @Channel.byUser(@$rootScope.user.uid)
       .success (data) =>
+        if data.channels.length < 1
+          @$location.path '/channels'
+
         @$scope.currentChannelId  = data.channels[0].uid
 
         for channel in data.channels

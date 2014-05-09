@@ -18,6 +18,8 @@ div
         span.uk-article-meta
           i.uk-icon-user
           | &nbsp;{{channels[currentChannelId].members.length}}
+          | &nbsp;
+          button.uk-button.uk-button-mini.uk-button-danger(ng-click='leaveChannel(currentChannelId)') leave channel
         span.uk-float-right.uk-article-meta {{channels[currentChannelId].description}}
         .chat#chat(style="height:{{maxHeight-120}}px")
           div(ng-repeat="m in channels[currentChannelId].messages")
