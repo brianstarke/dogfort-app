@@ -2,10 +2,11 @@ app = angular.module 'dogfort'
 
 class MainCtrl extends BaseCtrl
   @register app
-  @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'Auth'
+  @inject '$rootScope', '$scope', '$cookies', '$location', 'User', 'Auth', '$document'
 
   initialize: ->
     @$rootScope.users = {}
+    console.log @$document.referrer
 
     do @checkUserAuth
 
