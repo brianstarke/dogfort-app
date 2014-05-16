@@ -11,11 +11,13 @@ div
               span.uk-badge.uk-badge-notification(ng-show='c.unread > 0') {{c.unread}}
 
         .uk-panel.uk-panel-box.bottom.uk-panel-box-primary
-          h3.uk-panel-title members
-          div(ng-repeat="u in channels[currentChannelId].members")
-            span
-              i.uk-icon-circle(ng-class=" {'green': users[u].online }")
-            span &nbsp; @{{users[u].username}}
+          table
+            tr(ng-repeat="u in channels[currentChannelId].members")
+              td.uk-comment-avatar.sm-avatar-frame(width='20px')
+                img(ng-src="http://www.gravatar.com/avatar/{{users[u].gravatarHash}}?s=20")
+              td @{{users[u].username}}
+              td
+                i.uk-icon-circle(ng-class=" {'green': users[u].online }")
 
       .uk-width-5-6
         span.uk-article-meta
@@ -30,9 +32,6 @@ div
               p.uk-thumbnail-large(ng-show="m.hasImage")
                 img.uk-border-rounded(ng-src="{{m.attachment}}")
               header.uk-comment-header
-                div.uk-comment-avatar.avatar-frame
-                  img(ng-src="http://www.gravatar.com/avatar/{{users[m.userId].gravatarHash}}?s=40", ng-hide="m.isAdminMsg")
-                  img(ng-src="/images/admin-avatar.jpg", ng-show="m.isAdminMsg")
                 h4.uk-comment-title(ng-bind-html="m.text | linky", ng-hide="m.isHtml")
                 h4.uk-comment-title(ng-bind-html="showHtml(m.text)", ng-show="m.isHtml")
                 ul.uk-comment-meta.uk-subnav.uk-subnav-line
