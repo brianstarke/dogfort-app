@@ -14,4 +14,7 @@ html(ng-app='dogfort')
     block head
 
   body(ng-controller='MainCtrl', ng-cloak)
+    script.
+      console.log(document.referrer);
+
     block content

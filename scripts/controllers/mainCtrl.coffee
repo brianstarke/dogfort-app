@@ -6,8 +6,6 @@ class MainCtrl extends BaseCtrl
 
   initialize: ->
     @$rootScope.users = {}
-    console.log document.referrer
-
 
     do @checkUserAuth
 
