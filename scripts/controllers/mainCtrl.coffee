@@ -9,11 +9,22 @@ class MainCtrl extends BaseCtrl
 
     do @checkUserAuth
 
+    @$scope.$on 'user_join', @_userJoinHandler
+    @$scope.$on 'user_leave', @_userLeaveHandler
+
   logout: ->
     delete @$cookies['dogfort_token']
     delete @$rootScope['user']
 
     @$location.path '/login'
+
+  _userJoinHandler: (event, data) =>
+    @$rootScope.users[data].online = true if @$rootScope.users[data]?
+    @$rootScope.$digest()
+
+  _userLeaveHandler: (event, data) =>
+    @$rootScope.users[data].online = false if @$rootScope.users[data]?
+    @$rootScope.$digest()
 
   # for highlighting the correct tab on the navbar
   isActive: (viewLocation) -> viewLocation is @$location.path()
@@ -25,6 +36,12 @@ class MainCtrl extends BaseCtrl
       .success (data) =>
         # save user data on the root scope so everything can use it
         @$rootScope.user = data.user
+
+        setTimeout =>
+          @User.online().success (users) =>
+            for u in users
+              @$rootScope.users[u].online = true if @$rootScope.users[u]?
+        , 2000
 
         # redirect to chat after auth for now
         @$location.path '/chat'
@@ -45,7 +62,10 @@ class MainCtrl extends BaseCtrl
         console.log 'socket connection closed'
 
       conn.onmessage = (event) =>
-        @$rootScope.$broadcast 'message', event.data
+        e = JSON.parse event.data
+        topic = Object.keys(e)[0]
+
+        @$rootScope.$broadcast topic, e[topic]
 
     else
       alert 'This browser does not support WebSockets, use something newer.  http://caniuse.com/websockets'

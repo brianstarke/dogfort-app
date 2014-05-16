@@ -6,7 +6,6 @@ class ChatCtrl extends BaseCtrl
 
   initialize: ->
     @$scope.channels          = {}
-    @$scope.users             = {}
     @$scope.currentChannelId  = ''
     @$scope.maxHeight         = @$window.innerHeight
 
@@ -15,10 +14,7 @@ class ChatCtrl extends BaseCtrl
     do @_refreshChannels
 
   _messageHandler: (event, data) =>
-    d = JSON.parse(data)
-    channelId = Object.keys(d)[0]
-
-    @_addMessage channelId, d[channelId]
+    @_addMessage data
 
   # for highlighting channel tabs on the chat view
   isActive: (channelId) -> channelId is @$scope.currentChannelId
@@ -40,10 +36,10 @@ class ChatCtrl extends BaseCtrl
 
   _cacheUser: (id) ->
     # add user to local map if they aren't there already
-    if not @$scope.users[id]?
+    if not @$rootScope.users[id]?
       @User.byId(id)
         .success (data) =>
-          @$scope.users[id] = data
+          @$rootScope.users[id] = data
         .error (data) =>
           @toastr.error data, 'ERROR'
 
@@ -75,10 +71,9 @@ class ChatCtrl extends BaseCtrl
   _populateMessages: (channelId) ->
     @Message.byChannel(channelId, new Date().getTime(), 30)
       .success (data) =>
-        messages = data.sort (a,b) -> a.timestamp > b.timestamp
         @$scope.channels[channelId].messages = data.sort (a,b) -> a.timestamp > b.timestamp
 
-        for m in messages
+        for m in @$scope.channels[channelId].messages
           @$scope.channels[channelId].messages[m.uid] = m
 
         do @_scroll
@@ -86,16 +81,16 @@ class ChatCtrl extends BaseCtrl
       .error (data) =>
         @toastr.error data, 'ERROR'
 
-  _addMessage: (channelId, message) ->
+  _addMessage: (message) ->
     @_cacheUser message.userId unless message.isAdminMsg
 
-    @$scope.channels[channelId].messages.push message
+    @$scope.channels[message.channelId].messages.push message
     @$scope.$digest()
     @$document[0].getElementById('bloop').play()
     do @_scroll
 
-    if channelId isnt @$scope.currentChannelId
-      @$scope.channels[channelId].unread++
+    if message.channelId isnt @$scope.currentChannelId
+      @$scope.channels[message.channelId].unread++
       @$scope.$digest()
 
   _scroll: ->

@@ -10,6 +10,9 @@ app.factory 'User', ['$http', ($http) ->
 
     byId: (userId) ->
       $http.get @baseUrl + '/users/' + userId, { cache: true }
+
+    online: ->
+      $http.get @baseUrl + '/users/', { cache: false }
 ]
 
 app.factory 'authInterceptor',  ['$q', '$cookies', '$location', ($q, $cookies, $location) ->
