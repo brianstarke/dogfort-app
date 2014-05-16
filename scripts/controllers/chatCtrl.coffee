@@ -71,9 +71,10 @@ class ChatCtrl extends BaseCtrl
   _populateMessages: (channelId) ->
     @Message.byChannel(channelId, new Date().getTime(), 30)
       .success (data) =>
+        messages = data.sort (a,b) -> a.timestamp > b.timestamp
         @$scope.channels[channelId].messages = data.sort (a,b) -> a.timestamp > b.timestamp
 
-        for m in @$scope.channels[channelId].messages
+        for m in messages
           @$scope.channels[channelId].messages[m.uid] = m
 
         do @_scroll
